@@ -6,14 +6,14 @@
     <title>Document</title>
 </head>
 <body>
-    <iframe id="iframe" src="http://localhost:3000/chat/" frameborder="0"></iframe>
+    <!-- <iframe id="iframe" src="http://localhost:3000/chat/" frameborder="0"></iframe> -->
+    <iframe id="iframe" src="https://gratefully-stable-meerkat.ngrok-free.app/chat/" frameborder="0"></iframe>
     <script>
         const iframe = document.getElementById("iframe");
-        setInterval(() => {
-            console.log(iframe.contentWindow.location)
-        }, 1000);
+        window.addEventListener('message', (event) => {
+            console.log('Mensaje recibido del hijo:', event.data);
+        });
     </script>
-    <!-- <iframe id="iframe" src="https://gratefully-stable-meerkat.ngrok-free.app/chat/" frameborder="0"></iframe> -->
     <style>
         * {
             margin: 0;
