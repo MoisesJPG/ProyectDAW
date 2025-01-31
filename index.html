@@ -6,13 +6,39 @@
     <title>Document</title>
 </head>
 <body>
-    <!-- <iframe id="iframe" src="http://localhost:3000/chat/" frameborder="0"></iframe> -->
-    <iframe id="iframe" src="https://gratefully-stable-meerkat.ngrok-free.app/chat/" frameborder="0"></iframe>
+    <iframe id="iframe" src="http://localhost:3000/chat/" frameborder="0"></iframe>
     <script>
         const iframe = document.getElementById("iframe");
+
+        // Verificar si existe un valor en localStorage para el iframe
+        if (localStorage.getItem('iframe-src')) {
+            iframe.src = localStorage.getItem('iframe-src');
+        } else {
+            iframe.src = "https://gratefully-stable-meerkat.ngrok-free.app/";
+        }
+
+        // Escuchar mensajes enviados a la ventana
         window.addEventListener('message', (event) => {
-            console.log('Mensaje recibido del hijo:', event.data);
+            console.log('Mensaje recibido:', event);
+
+            // Validar el origen del mensaje
+            if (event.origin !== 'https://tu-dominio-backend.com') {
+                console.warn('Mensaje rechazado por origen no válido:', event.origin);
+                return;
+            }
+
+            // Actualizar el src del iframe con el valor enviado en event.data
+            if (event.data && typeof event.data === 'string') {
+                iframe.src = event.data;
+
+                // Guardar en localStorage para persistencia
+                localStorage.setItem('iframe-src', event.data);
+            } else {
+                console.warn('Mensaje rechazado: data inválida:', event.data);
+            }
         });
+
+
     </script>
     <style>
         * {
